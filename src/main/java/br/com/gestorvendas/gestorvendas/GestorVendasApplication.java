@@ -9,7 +9,6 @@ public class GestorVendasApplication {
 	public static void main(String[] args) {
 
 		SpringApplication.run(GestorVendasApplication.class, args);
-		System.out.println("Hello World!");
 	}
 
 
