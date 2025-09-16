@@ -1,0 +1,16 @@
+package br.com.gestorvendas.gestorvendas;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class GestorVendasApplication {
+
+	public static void main(String[] args) {
+
+		SpringApplication.run(GestorVendasApplication.class, args);
+		System.out.println("Hello World!");
+	}
+
+
+}
