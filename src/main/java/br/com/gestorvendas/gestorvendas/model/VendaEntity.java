@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Venda {
+public class VendaEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,9 +29,9 @@ public class Venda {
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "produto_id", nullable = false)
-    private Produto produto;
+    private ProdutoEntity produtoEntity;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "usuario_id", nullable = false)
-    private Usuario usuario;
+    private UsuarioEntity usuarioEntity;
 }
