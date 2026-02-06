@@ -1,90 +1,65 @@
 # GestorVendas
-Sistema de Gestão de Vendas e Estoque para pequenos comerciantes
+![Java](https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=openjdk&logoColor=white)
+![Spring](https://img.shields.io/badge/spring-%236DB33F.svg?style=for-the-badge&logo=spring&logoColor=white)
+![Postgres](https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white)
+![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)
 
-# Configurações AWS
+> Projeto acadêmico desenvolvido como parte do **TCC**, com foco em **aprendizado prático de desenvolvimento back-end**.
+> O sistema simula um **controle de vendas e estoque** para pequenos comerciantes,
+> aplicando conceitos fundamentais de **Java, Spring Boot, JPA e banco de dados relacional**.
 
-## User Data
-Inserir código abaixo na User Data de uma instância EC2 da AWS.
-````markdown
-#!/bin/bash
-# Atualiza pacotes
-apt-get update -y
-apt-get upgrade -y
+---
 
-# Instala Docker e Docker Compose
-apt-get install -y docker.io docker-compose
-systemctl enable docker
-systemctl start docker
+## Funcionalidades
 
-# Cria diretório do projeto
-mkdir -p /home/ubuntu/gestorvendas
-cd /home/ubuntu/gestorvendas
+* 📦 **Cadastro e Controle de Produtos**: gerenciamento de produtos e quantidade em estoque.
+* 🧾 **Registro de Vendas**: criação de vendas com múltiplos itens.
+* 🔄 **Atualização Automática de Estoque**: o estoque é ajustado conforme as vendas realizadas.
+* 🗂️ **Persistência com JPA**: mapeamento das entidades e relacionamentos no banco de dados.
+* 🧱 **Arquitetura em Camadas**: separação entre controller, regras de negócio e repositórios.
+* 🐳 **Banco de Dados em Docker**: ambiente local simples e reproduzível.
 
-cat <<'EOSQL' > init.sql
--- Criação da tabela produtos
-CREATE TABLE produtos (
-id SERIAL PRIMARY KEY,
-nome VARCHAR(100) NOT NULL,
-descricao VARCHAR(255) NOT NULL,
-quantidade INT NOT NULL,
-preco NUMERIC(10,2) NOT NULL
-);
+---
 
--- Criação da tabela usuarios
-CREATE TABLE usuarios (
-id SERIAL PRIMARY KEY,
-nome VARCHAR(100) NOT NULL,
-login VARCHAR(50) NOT NULL UNIQUE,
-senha VARCHAR(255) NOT NULL,
-perfil VARCHAR(20) NOT NULL
-);
+## 🚀 Tecnologias Utilizadas
+| Ferramenta | Descrição |
+| :--- | :--- |
+| **Java** | Linguagem principal utilizada no projeto. |
+| **Spring Boot** | Framework para criação de aplicações Java com configuração simplificada. |
+| **Spring Data JPA** | Persistência de dados e operações CRUD. |
+| **Hibernate** | Implementação JPA para mapeamento objeto-relacional. |
+| **PostgreSQL** | Banco de dados relacional para armazenamento dos dados. |
+| **Lombok** | Redução de código repetitivo (getters, setters, construtores). |
+| **Docker / Docker Compose** | Execução do banco de dados em ambiente isolado. |
 
--- Criação da tabela vendas
-CREATE TABLE vendas (
-id SERIAL PRIMARY KEY,
-quantidade_vendida INT NOT NULL CHECK (quantidade_vendida >= 1),
-data_hora TIMESTAMP NOT NULL,
-produto_id INT NOT NULL,
-usuario_id INT NOT NULL,
-CONSTRAINT fk_produto FOREIGN KEY (produto_id) REFERENCES produtos(id) ON DELETE RESTRICT,
-CONSTRAINT fk_usuario FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE RESTRICT
-);
-EOSQL
+---
 
-# Cria docker-compose.yml
-cat <<EOF > docker-compose.yml
+## 🧠 Arquitetura do Projeto
 
-services:
-  postgres:
-    image: postgres:15
-    restart: always
-    environment:
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: admin123
-      POSTGRES_DB: gestordb
-    ports:
-      - "5432:5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+O projeto foi estruturado de forma simples e organizada, seguindo boas práticas:
+1. **Model (Entidades)**  
+   Representa as classes do domínio, como Produto, Venda, ItemVenda e Usuário.
 
-  app:
-    image: tabreubr/gestorvendas:1.0
-    container_name: gestorvendas_app
-    restart: always
-    depends_on:
-      - postgres
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/gestordb
-      SPRING_DATASOURCE_USERNAME: admin
-      SPRING_DATASOURCE_PASSWORD: admin123
-    ports:
-      - "8080:8080"
+2. **Repository**  
+   Responsável pelo acesso ao banco de dados utilizando Spring Data JPA.
 
-volumes:
-  postgres_data:
-EOF
+3. **Use Cases**  
+   Implementa as regras de negócio principais, como o registro de vendas.
 
-# Sobe todos os containers
-docker-compose up -d
-````
+4. **Controller**  
+   Camada de entrada preparada para integração com front-end ou consumo via API.
+
+Essa estrutura facilita o entendimento do código e a evolução do projeto.
+
+---
+
+## 🎯 Objetivo do Projeto
+
+> Este projeto tem como objetivo demonstrar conhecimento prático em desenvolvimento back-end com Java e Spring Boot, incluindo:
+
+* Modelagem de domínio
+* Persistência com JPA
+* Arquitetura de software
+* Boas práticas aplicadas a um sistema realista
+
+Serve como base sólida para expansão em uma API REST completa ou integração com um front-end desacoplado.
